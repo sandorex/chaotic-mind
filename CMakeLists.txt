@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 3.20) # temp cuz of android gradle bs
-#cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.27)
 
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
@@ -21,55 +20,65 @@ if(MSVC)
     endif()
 endif()
 
-# TODO try setting SOURCE_DIR for dependencies so they are downloaded only once
-# include(FetchContent)
-#
-# set(FETCHCONTENT_QUIET FALSE)
-# FetchContent_Declare(
-#     SDL
-#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
-#     GIT_TAG release-3.2.10
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-# )
-# FetchContent_MakeAvailable(SDL)
-# set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
-#
-# FetchContent_Declare(
-#     SDL_ttf
-#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL_ttf.git"
-#     GIT_TAG release-3.2.2
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-# )
-# FetchContent_MakeAvailable(SDL_ttf)
-# set_property(DIRECTORY "${sdl_ttf_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
-#
-# FetchContent_Declare(
-#     SDL_image
-#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL_image.git"
-#     GIT_TAG release-3.2.4
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-# )
-# FetchContent_MakeAvailable(SDL_image)
-# set_property(DIRECTORY "${SDL_image_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+include(FetchContent)
+set(FETCHCONTENT_QUIET FALSE)
+FetchContent_Declare(
+    SDL
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/SDL3"
+    GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
+    GIT_TAG 877399b2b2cf21e67554ed9046410f268ce1d1b2 # release-3.2.10
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL)
+set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
-# FetchContent_Declare(
-#     libgit2
-#     GIT_REPOSITORY "https://github.com/libgit2/libgit2.git"
-#     GIT_TAG v1.9.0
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-# )
-# set(BUILD_TESTS OFF CACHE INTERNAL "")
-# set(BUILD_CLI OFF CACHE INTERNAL "")
-# FetchContent_MakeAvailable(libgit2)
-# set_property(DIRECTORY "${libgit2_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+FetchContent_Declare(
+    SDL_ttf
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/SDL3_ttf"
+    GIT_REPOSITORY "https://github.com/libsdl-org/SDL_ttf.git"
+    GIT_TAG a1ce3670aec736ecbf0936c43f2f0cc53aa61e5b # release-3.2.2
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL_ttf)
+set_property(DIRECTORY "${sdl_ttf_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl EXCLUDE_FROM_ALL)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl_image EXCLUDE_FROM_ALL)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl_ttf EXCLUDE_FROM_ALL)
+FetchContent_Declare(
+    SDL_image
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/SDL3_image"
+    GIT_REPOSITORY "https://github.com/libsdl-org/SDL_image.git"
+    GIT_TAG 11154afb7855293159588b245b446a4ef09e574f # release-3.2.4
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL_image)
+set_property(DIRECTORY "${SDL_image_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+
+FetchContent_Declare(
+    libgit2
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/libgit2"
+    GIT_REPOSITORY "https://github.com/libgit2/libgit2.git"
+    GIT_TAG v1.9.0
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+)
+set(BUILD_TESTS OFF CACHE INTERNAL "")
+set(BUILD_CLI OFF CACHE INTERNAL "")
+FetchContent_MakeAvailable(libgit2)
+set_property(DIRECTORY "${libgit2_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+
+FetchContent_Declare(
+    clay
+    SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/clay"
+    GIT_REPOSITORY "https://github.com/nicbarker/clay.git"
+    GIT_TAG 6d23a35d1596f139998b2994a63a1d5a982e713b # v0.13
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    SOURCE_SUBDIR null # point to non-existing subdir so cmake is not configured
+)
+FetchContent_MakeAvailable(clay)
+set_property(DIRECTORY "${clay_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 
