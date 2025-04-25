@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.20) # temp cuz of android gradle bs
+#cmake_minimum_required(VERSION 3.27)
 
 # set the output directory for built objects.
 # This makes sure that the dynamic library goes into the build directory automatically.
@@ -20,38 +21,39 @@ if(MSVC)
     endif()
 endif()
 
-include(FetchContent)
-
-set(FETCHCONTENT_QUIET FALSE)
-FetchContent_Declare(
-    SDL
-    GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
-    GIT_TAG release-3.2.10
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL)
-set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
-
-FetchContent_Declare(
-    SDL_ttf
-    GIT_REPOSITORY "https://github.com/libsdl-org/SDL_ttf.git"
-    GIT_TAG release-3.2.2
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL_ttf)
-set_property(DIRECTORY "${sdl_ttf_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
-
-FetchContent_Declare(
-    SDL_image
-    GIT_REPOSITORY "https://github.com/libsdl-org/SDL_image.git"
-    GIT_TAG release-3.2.4
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL_image)
-set_property(DIRECTORY "${SDL_image_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+# TODO try setting SOURCE_DIR for dependencies so they are downloaded only once
+# include(FetchContent)
+#
+# set(FETCHCONTENT_QUIET FALSE)
+# FetchContent_Declare(
+#     SDL
+#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL.git"
+#     GIT_TAG release-3.2.10
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+# )
+# FetchContent_MakeAvailable(SDL)
+# set_property(DIRECTORY "${sdl_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+#
+# FetchContent_Declare(
+#     SDL_ttf
+#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL_ttf.git"
+#     GIT_TAG release-3.2.2
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+# )
+# FetchContent_MakeAvailable(SDL_ttf)
+# set_property(DIRECTORY "${sdl_ttf_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+#
+# FetchContent_Declare(
+#     SDL_image
+#     GIT_REPOSITORY "https://github.com/libsdl-org/SDL_image.git"
+#     GIT_TAG release-3.2.4
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+# )
+# FetchContent_MakeAvailable(SDL_image)
+# set_property(DIRECTORY "${SDL_image_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 
 # FetchContent_Declare(
 #     libgit2
@@ -64,6 +66,10 @@ set_property(DIRECTORY "${SDL_image_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
 # set(BUILD_CLI OFF CACHE INTERNAL "")
 # FetchContent_MakeAvailable(libgit2)
 # set_property(DIRECTORY "${libgit2_SOURCE_DIR}" PROPERTY EXCLUDE_FROM_ALL TRUE)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl EXCLUDE_FROM_ALL)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl_image EXCLUDE_FROM_ALL)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl_ttf EXCLUDE_FROM_ALL)
 
 set(EXECUTABLE_NAME ${PROJECT_NAME})
 
