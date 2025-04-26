@@ -1,6 +1,3 @@
-# ignore downloaded dependencies
-vendor/
-
 ## Android stuff ##
 # Gradle files
 .gradle/
